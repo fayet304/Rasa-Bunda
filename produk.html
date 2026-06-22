@@ -76,7 +76,7 @@ footer{ background:#222; color:white; text-align:center; padding:30px; margin-to
 const sheetId = '1p6gitfqyLu1ecUwZ2knv1bjYTW7CbnaCugiya7HOCbc'; 
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-    // Fungsi ajaib untuk mengubah angka polos menjadi format Rp 12.000
+// Fungsi ajaib untuk mengubah angka polos menjadi format Rp 12.000
 function formatRupiah(angka) {
     if (!angka) return "Rp 0";
     // Memastikan data adalah angka, lalu diformat ke mata uang Indonesia (IDR)
@@ -90,10 +90,8 @@ function formatRupiah(angka) {
 }
 
 fetch(base)
-fetch(base)
     .then(res => res.text())
     .then(data => {
-        // Membersihkan data mentah dari Google agar bisa dibaca JSON JavaScript
         const temp = data.substring(47).slice(0, -2);
         const json = JSON.parse(temp);
         const rows = json.table.rows;
@@ -101,7 +99,6 @@ fetch(base)
         const menuContainer = document.getElementById('menu-container');
         document.getElementById('loading').style.display = 'none';
 
-        // Kelompokkan data berdasarkan Kategori
         const groupedMenu = {};
 
         rows.forEach(row => {
@@ -117,7 +114,6 @@ fetch(base)
             groupedMenu[kategori].push({ nama, deskripsi, harga, foto });
         });
 
-        // Tampilkan ke dalam HTML berdasarkan Kategori masing-masing
         for (const kategori in groupedMenu) {
             let categoryHtml = `
                 <div class="category-block">
@@ -132,7 +128,8 @@ fetch(base)
                         <div class="card-content">
                             <h3>${item.nama}</h3>
                             <p>${item.deskripsi}</p>
-                            <p class="price">${item.harga}</p>
+                            <!-- Di sini harganya otomatis diubah ke format Rp lewat fungsi formatRupiah -->
+                            <p class="price">${formatRupiah(item.harga)}</p>
                         </div>
                     </div>
                 `;
