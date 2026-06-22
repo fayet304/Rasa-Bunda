@@ -3,311 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Rasa Bunda | Katering, Kue Basah & Makanan Khas Melayu Batam</title>
-
-<meta name="description" content="Rasa Bunda menyediakan katering, nasi kotak, kue basah, kue kering, dan makanan khas Melayu di Batam. Cocok untuk acara keluarga, kantor, dan berbagai kebutuhan kuliner.">
-
+<meta name="description" content="Rasa Bunda menyediakan katering, nasi kotak, kue basah, kue kering, dan makanan khas Melayu di Batam.">
 <meta name="keywords" content="katering batam, nasi kotak batam, kue basah batam, makanan khas melayu batam, umkm makanan batam, catering rumahan batam">
-
 <meta name="author" content="Rasa Bunda">
-
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
-}
-
-body{
-line-height:1.6;
-color:#333;
-background:#fffdf8;
-}
-
-.container{
-width:90%;
-max-width:1200px;
-margin:auto;
-}
-
-header{
-background:#6b3f1d;
-color:white;
-padding:20px 0;
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-}
-
-.logo span{
-color:#d9b36c;
-}
-
-nav ul{
-display:flex;
-list-style:none;
-}
-
-nav ul li{
-margin-left:20px;
-}
-
-nav ul li a{
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-
-.hero{
-background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
-url('hero.jpg');
-background-size:cover;
-background-position:center;
-padding:120px 0;
-color:white;
-text-align:center;
-}
-
-.hero h1{
-font-size:48px;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:20px;
-margin-bottom:30px;
-}
-
-.btn{
-display:inline-block;
-padding:15px 30px;
-background:#d9b36c;
-color:#333;
-text-decoration:none;
-border-radius:50px;
-font-weight:bold;
-}
-
-section{
-padding:70px 0;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:40px;
-color:#6b3f1d;
-}
-
-.about{
-text-align:center;
-}
-
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-
-.card h3{
-color:#6b3f1d;
-margin-bottom:10px;
-}
-
-.why{
-background:#f7f0e6;
-}
-
-.why ul{
-max-width:700px;
-margin:auto;
-}
-
-.why li{
-margin-bottom:15px;
-font-size:18px;
-}
-
-.testimonials{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
-
-.testimonial{
-background:white;
-padding:20px;
-border-left:5px solid #d9b36c;
-box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-
-.cta{
-background:#6b3f1d;
-color:white;
-text-align:center;
-}
-
-footer{
-background:#222;
-color:white;
-text-align:center;
-padding:30px;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:15px 20px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-}
-
-@media(max-width:768px){
-
-.hero h1{
-font-size:32px;
-}
-
-.hero p{
-font-size:18px;
-}
-
-nav{
-flex-direction:column;
-}
-
-nav ul{
-margin-top:15px;
-}
-
-}
-
+*{ margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
+body{ line-height:1.6; color:#333; background:#fffdf8; }
+.container{ width:90%; max-width:1200px; margin:auto; }
+header{ background:#6b3f1d; color:white; padding:20px 0; position:sticky; top:0; z-index:1000; }
+nav{ display:flex; justify-content:space-between; align-items:center; }
+.logo{ font-size:28px; font-weight:bold; }
+.logo span{ color:#d9b36c; }
+nav ul{ display:flex; list-style:none; }
+nav ul li{ margin-left:20px; }
+nav ul li a{ color:white; text-decoration:none; font-weight:bold; }
+nav ul li a.active{ color:#d9b36c; border-bottom: 2px solid #d9b36c; padding-bottom: 5px; }
+.hero{ background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url('hero.jpg'); background-size:cover; background-position:center; padding:120px 0; color:white; text-align:center; }
+.hero h1{ font-size:48px; margin-bottom:20px; }
+.hero p{ font-size:20px; margin-bottom:30px; }
+.btn{ display:inline-block; padding:15px 30px; background:#d9b36c; color:#333; text-decoration:none; border-radius:50px; font-weight:bold; }
+section{ padding:70px 0; }
+.section-title{ text-align:center; margin-bottom:40px; color:#6b3f1d; }
+.about{ text-align:center; font-size: 18px; max-width: 800px; margin: auto; }
+.why{ background:#f7f0e6; }
+.why ul{ max-width:700px; margin:auto; }
+.why li{ margin-bottom:15px; font-size:18px; list-style: none; }
+footer{ background:#222; color:white; text-align:center; padding:30px; }
+.whatsapp{ position:fixed; bottom:20px; right:20px; background:#25D366; color:white; padding:15px 20px; border-radius:50px; text-decoration:none; font-weight:bold; z-index: 1000; }
+@media(max-width:768px){ .hero h1{ font-size:32px; } .hero p{ font-size:18px; } nav{ flex-direction:column; } nav ul{ margin-top:15px; } }
 </style>
 </head>
-
 <body>
 
 <header>
 <div class="container">
 <nav>
 <div class="logo">Rasa <span>Bunda</span></div>
-
 <ul>
-<li><a href="#tentang">Tentang</a></li>
-<li><a href="#produk">Produk</a></li>
-<li><a href="#testimoni">Testimoni</a></li>
-<li><a href="#kontak">Kontak</a></li>
+<li><a href="index.html" class="active">Beranda</a></li>
+<li><a href="produk.html">Produk</a></li>
+<li><a href="kontak.html">Kontak</a></li>
 </ul>
 </nav>
 </div>
 </header>
 
 <section class="hero">
-
 <div class="container">
-
 <h1>Rasa Bunda</h1>
-
-<p>
-Cita Rasa Rumahan Khas Melayu untuk Keluarga, Acara, dan Kebutuhan Kuliner Anda di Batam
-</p>
-
-<a href="https://wa.me/6281234567890" class="btn">
-Pesan Sekarang
-</a>
-
+<p>Cita Rasa Rumahan Khas Melayu untuk Keluarga, Acara, dan Kebutuhan Kuliner Anda di Batam</p>
+<a href="produk.html" class="btn">Lihat Menu Kami</a>
 </div>
-
 </section>
 
 <section id="tentang">
-
 <div class="container">
-
-<h2 class="section-title">
-Tentang Rasa Bunda
-</h2>
-
+<h2 class="section-title">Tentang Rasa Bunda</h2>
 <div class="about">
-
-<p>
-Rasa Bunda merupakan UMKM kuliner yang menghadirkan berbagai makanan khas Melayu, katering rumahan, nasi kotak, kue basah, dan kue kering berkualitas di Batam.
-</p>
-
+<p>Rasa Bunda merupakan UMKM kuliner yang menghadirkan berbagai makanan khas Melayu, katering rumahan, nasi kotak, kue basah, dan kue kering berkualitas di Batam.</p>
 </div>
-
 </div>
-
-</section>
-
-<section id="produk">
-
-<div class="container">
-
-<h2 class="section-title">
-Produk Kami
-</h2>
-
-<div class="products">
-
-<div class="card">
-<h3>Katering Harian</h3>
-<p>Menu rumahan sehat dan lezat untuk keluarga dan kantor.</p>
-</div>
-
-<div class="card">
-<h3>Nasi Kotak</h3>
-<p>Cocok untuk rapat, seminar, dan berbagai acara.</p>
-</div>
-
-<div class="card">
-<h3>Kue Basah</h3>
-<p>Aneka jajanan tradisional khas Melayu.</p>
-</div>
-
-<div class="card">
-<h3>Kue Kering</h3>
-<p>Cocok untuk hampers, oleh-oleh dan hari raya.</p>
-</div>
-
-</div>
-
-</div>
-
 </section>
 
 <section class="why">
-
 <div class="container">
-
-<h2 class="section-title">
-Mengapa Memilih Rasa Bunda?
-</h2>
-
+<h2 class="section-title">Mengapa Memilih Rasa Bunda?</h2>
 <ul>
 <li>✓ Rasa khas rumahan yang autentik</li>
 <li>✓ Bahan segar dan berkualitas</li>
@@ -315,70 +76,14 @@ Mengapa Memilih Rasa Bunda?
 <li>✓ Harga terjangkau</li>
 <li>✓ Pelayanan cepat dan ramah</li>
 </ul>
-
 </div>
-
-</section>
-
-<section id="testimoni">
-
-<div class="container">
-
-<h2 class="section-title">
-Testimoni Pelanggan
-</h2>
-
-<div class="testimonials">
-
-<div class="testimonial">
-"Masakannya enak dan cocok untuk acara keluarga."
-</div>
-
-<div class="testimonial">
-"Kue tradisionalnya sangat autentik dan lezat."
-</div>
-
-<div class="testimonial">
-"Pelayanan cepat dan kualitas selalu terjaga."
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="cta" id="kontak">
-
-<div class="container">
-
-<h2>Siap Memesan?</h2>
-
-<p>
-Hubungi kami sekarang untuk konsultasi menu dan pemesanan.
-</p>
-
-<br>
-
-<a href="https://wa.me/6281234567890" class="btn">
-WhatsApp Sekarang
-</a>
-
-</div>
-
 </section>
 
 <footer>
-
-<p>
-© 2025 Rasa Bunda | UMKM Kuliner Batam
-</p>
-
+<p>© 2026 Rasa Bunda | UMKM Kuliner Batam</p>
 </footer>
 
-<a href="https://wa.me/6281234567890" class="whatsapp">
-WhatsApp
-</a>
+<a href="https://wa.me/6281234567890" class="whatsapp">WhatsApp</a>
 
 </body>
 </html>
