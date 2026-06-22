@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produk Kami | Rasa Bunda Batam</title>
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; font-family:Arial, sans-serif; }
+body{ line-height:1.6; color:#333; background:#fffdf8; }
+.container{ width:90%; max-width:1200px; margin:auto; }
+header{ background:#6b3f1d; color:white; padding:20px 0; position:sticky; top:0; z-index:1000; }
+nav{ display:flex; justify-content:space-between; align-items:center; }
+.logo{ font-size:28px; font-weight:bold; }
+.logo span{ color:#d9b36c; }
+nav ul{ display:flex; list-style:none; }
+nav ul li{ margin-left:20px; }
+nav ul li a{ color:white; text-decoration:none; font-weight:bold; }
+nav ul li a.active{ color:#d9b36c; border-bottom: 2px solid #d9b36c; padding-bottom: 5px; }
+section{ padding:70px 0; }
+.section-title{ text-align:center; margin-bottom:40px; color:#6b3f1d; }
+.products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.card{ background:white; padding:25px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,.1); text-align:center; }
+.card h3{ color:#6b3f1d; margin-bottom:10px; }
+footer{ background:#222; color:white; text-align:center; padding:30px; }
+.whatsapp{ position:fixed; bottom:20px; right:20px; background:#25D366; color:white; padding:15px 20px; border-radius:50px; text-decoration:none; font-weight:bold; z-index: 1000; }
+@media(max-width:768px){ nav{ flex-direction:column; } nav ul{ margin-top:15px; } }
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<nav>
+<div class="logo">Rasa <span>Bunda</span></div>
+<ul>
+<li><a href="index.html">Beranda</a></li>
+<li><a href="produk.html" class="active">Produk</a></li>
+<li><a href="kontak.html">Kontak</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<section id="produk">
+<div class="container">
+<h2 class="section-title">Produk Kami</h2>
+<div class="products">
+<div class="card">
+<h3>Katering Harian</h3>
+<p>Menu rumahan sehat dan lezat untuk keluarga dan kantor.</p>
+</div>
+<div class="card">
+<h3>Nasi Kotak</h3>
+<p>Cocok untuk rapat, seminar, dan berbagai acara.</p>
+</div>
+<div class="card">
+<h3>Kue Basah</h3>
+<p>Aneka jajanan tradisional khas Melayu.</p>
+</div>
+<div class="card">
+<h3>Kue Kering</h3>
+<p>Cocok untuk hampers, oleh-oleh dan hari raya.</p>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<p>© 2026 Rasa Bunda | UMKM Kuliner Batam</p>
+</footer>
+
+<a href="https://wa.me/6281234567890" class="whatsapp">WhatsApp</a>
+
+</body>
+</html>
