@@ -17,13 +17,15 @@ nav ul li{ margin-left:20px; }
 nav ul li a{ color:white; text-decoration:none; font-weight:bold; }
 nav ul li a.active{ color:#d9b36c; border-bottom: 2px solid #d9b36c; padding-bottom: 5px; }
 
-section{ padding:70px 0; }
-.section-title{ text-align:center; margin-bottom:40px; color:#6b3f1d; }
+section{ padding:50px 0; }
+.section-title{ text-align:center; margin-bottom:20px; color:#6b3f1d; }
 
-/* STYLE UNTUK KATEGORI DINAMIS */
-.category-block { margin-bottom: 50px; }
-.category-title { background: #6b3f1d; color: #fff; display: inline-block; padding: 8px 25px; border-radius: 50px; margin-bottom: 25px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
+/* STYLE TOMBOL FILTER KATEGORI (SIMPEL & ELEGAN) */
+.filter-container { text-align: center; margin-bottom: 40px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.filter-btn { background: white; color: #6b3f1d; border: 2px solid #6b3f1d; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
+.filter-btn:hover, .filter-btn.active { background: #6b3f1d; color: white; box-shadow: 0 4px 10px rgba(107, 63, 29, 0.3); }
 
+/* GRID PRODUK */
 .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
 .card{ background:white; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,.1); overflow:hidden; display:flex; flex-direction:column; }
 .card img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
@@ -31,12 +33,10 @@ section{ padding:70px 0; }
 .card h3{ color:#6b3f1d; margin-bottom:10px; }
 .price { font-weight: bold; color: #d9b36c; margin-top: 10px; font-size: 18px; }
 
-/* LOADING ANIMATION */
 #loading { text-align: center; font-size: 18px; color: #6b3f1d; font-weight: bold; }
-
 footer{ background:#222; color:white; text-align:center; padding:30px; margin-top: 50px; }
 .whatsapp{ position:fixed; bottom:20px; right:20px; background:#25D366; color:white; padding:15px 20px; border-radius:50px; text-decoration:none; font-weight:bold; z-index: 1000; }
-@media(max-width:768px){ nav{ flex-direction:column; } nav ul{ margin-top:15px; } }
+@media(max-width:768px) { nav{ flex-direction:column; } nav ul{ margin-top:15px; } .filter-container { gap: 8px; } .filter-btn { font-size: 14px; padding: 8px 15px; } }
 </style>
 </head>
 <body>
@@ -56,11 +56,15 @@ footer{ background:#222; color:white; text-align:center; padding:30px; margin-to
 
 <section id="produk">
 <div class="container">
-<h2 class="section-title">Daftar Produk</h2>
+<h2 class="section-title">Daftar Produk Kami</h2>
+
+<!-- Wadah Tombol Kategori (Akan Muncul Otomatis dari Google Sheets) -->
+<div class="filter-container" id="filter-container"></div>
+
 <div id="loading">Sedang memuat menu lezat...</div>
 
-<!-- Tempat Kategori dan Produk Muncul Otomatis -->
-<div id="menu-container"></div>
+<!-- Tempat Produk Muncul -->
+<div class="products" id="products-grid"></div>
 
 </div>
 </section>
@@ -76,17 +80,12 @@ footer{ background:#222; color:white; text-align:center; padding:30px; margin-to
 const sheetId = '1p6gitfqyLu1ecUwZ2knv1bjYTW7CbnaCugiya7HOCbc'; 
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
-// Fungsi ajaib untuk mengubah angka polos menjadi format Rp 12.000
+let allProducts = []; // Menyimpan semua data produk
+
 function formatRupiah(angka) {
     if (!angka) return "Rp 0";
-    // Memastikan data adalah angka, lalu diformat ke mata uang Indonesia (IDR)
     const nomor = Number(angka.toString().replace(/[^0-9]/g, ''));
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(nomor);
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(nomor).replace("IDR", "Rp");
 }
 
 fetch(base)
@@ -96,11 +95,11 @@ fetch(base)
         const json = JSON.parse(temp);
         const rows = json.table.rows;
         
-        const menuContainer = document.getElementById('menu-container');
         document.getElementById('loading').style.display = 'none';
 
-        const groupedMenu = {};
-
+        // 1. Ambil data dari Sheets dan masukkan ke dalam Array
+        const categories = new Set(); // Menggunakan Set agar tidak ada kategori ganda
+        
         rows.forEach(row => {
             const kategori = row.c[0] ? row.c[0].v : 'Lainnya';
             const nama = row.c[1] ? row.c[1].v : '';
@@ -108,41 +107,66 @@ fetch(base)
             const harga = row.c[3] ? row.c[3].v : '';
             const foto = row.c[4] ? row.c[4].v : 'https://via.placeholder.com/300x200?text=No+Image';
 
-            if (!groupedMenu[kategori]) {
-                groupedMenu[kategori] = [];
-            }
-            groupedMenu[kategori].push({ nama, deskripsi, harga, foto });
+            categories.add(kategori);
+            allProducts.push({ kategori, nama, deskripsi, harga, foto });
         });
 
-        for (const kategori in groupedMenu) {
-            let categoryHtml = `
-                <div class="category-block">
-                    <h3 class="category-title">${kategori}</h3>
-                    <div class="products">
-            `;
+        // 2. Buat tombol "Semua" + tombol kategori secara otomatis
+        const filterContainer = document.getElementById('filter-container');
+        let filterHtml = `<button class="filter-btn active" onclick="filterMenu('Semua', this)">Semua</button>`;
+        
+        categories.forEach(cat => {
+            filterHtml += `<button class="filter-btn" onclick="filterMenu('${cat}', this)">${cat}</button>`;
+        });
+        filterContainer.innerHTML = filterHtml;
 
-            groupedMenu[kategori].forEach(item => {
-                categoryHtml += `
-                    <div class="card">
-                        <img src="${item.foto}" alt="${item.nama}">
-                        <div class="card-content">
-                            <h3>${item.nama}</h3>
-                            <p>${item.deskripsi}</p>
-                            <!-- Di sini harganya otomatis diubah ke format Rp lewat fungsi formatRupiah -->
-                            <p class="price">${formatRupiah(item.harga)}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            categoryHtml += `</div></div>`;
-            menuContainer.innerHTML += categoryHtml;
-        }
+        // Tampilkan semua produk di awal
+        displayProducts(allProducts);
     })
     .catch(err => {
-        document.getElementById('loading').innerText = 'Gagal memuat menu. Pastikan ID Sheets benar & sudah di-share publik.';
+        document.getElementById('loading').innerText = 'Gagal memuat menu.';
         console.error(err);
     });
+
+// Fungsi untuk menampilkan produk ke dalam grid
+function displayProducts(productsToDisplay) {
+    const grid = document.getElementById('products-grid');
+    grid.innerHTML = ''; // Kosongkan grid terlebih dahulu
+
+    if(productsToDisplay.length === 0) {
+        grid.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Produk tidak ditemukan.</p>';
+        return;
+    }
+
+    productsToDisplay.forEach(item => {
+        grid.innerHTML += `
+            <div class="card">
+                <img src="${item.foto}" alt="${item.nama}">
+                <div class="card-content">
+                    <h3>${item.nama}</h3>
+                    <p>${item.deskripsi}</p>
+                    <p class="price">${formatRupiah(item.harga)}</p>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Fungsi ajaib untuk memfilter menu saat tombol diklik
+function filterMenu(kategori, buttonComponent) {
+    // Ubah status tombol yang aktif
+    const buttons = document.querySelectorAll('.filter-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    buttonComponent.classList.add('active');
+
+    // Filter produknya
+    if (kategori === 'Semua') {
+        displayProducts(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.kategori === kategori);
+        displayProducts(filtered);
+    }
+}
 </script>
 
 </body>
