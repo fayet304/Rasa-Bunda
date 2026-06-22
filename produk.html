@@ -16,12 +16,25 @@ nav ul{ display:flex; list-style:none; }
 nav ul li{ margin-left:20px; }
 nav ul li a{ color:white; text-decoration:none; font-weight:bold; }
 nav ul li a.active{ color:#d9b36c; border-bottom: 2px solid #d9b36c; padding-bottom: 5px; }
+
 section{ padding:70px 0; }
 .section-title{ text-align:center; margin-bottom:40px; color:#6b3f1d; }
+
+/* STYLE UNTUK KATEGORI DINAMIS */
+.category-block { margin-bottom: 50px; }
+.category-title { background: #6b3f1d; color: #fff; display: inline-block; padding: 8px 25px; border-radius: 50px; margin-bottom: 25px; font-size: 20px; box-shadow: 0 4px 10px rgba(0,0,0,.1); }
+
 .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
-.card{ background:white; padding:25px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,.1); text-align:center; }
+.card{ background:white; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,.1); overflow:hidden; display:flex; flex-direction:column; }
+.card img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+.card-content { padding: 20px; text-align: center; }
 .card h3{ color:#6b3f1d; margin-bottom:10px; }
-footer{ background:#222; color:white; text-align:center; padding:30px; }
+.price { font-weight: bold; color: #d9b36c; margin-top: 10px; font-size: 18px; }
+
+/* LOADING ANIMATION */
+#loading { text-align: center; font-size: 18px; color: #6b3f1d; font-weight: bold; }
+
+footer{ background:#222; color:white; text-align:center; padding:30px; margin-top: 50px; }
 .whatsapp{ position:fixed; bottom:20px; right:20px; background:#25D366; color:white; padding:15px 20px; border-radius:50px; text-decoration:none; font-weight:bold; z-index: 1000; }
 @media(max-width:768px){ nav{ flex-direction:column; } nav ul{ margin-top:15px; } }
 </style>
@@ -43,25 +56,12 @@ footer{ background:#222; color:white; text-align:center; padding:30px; }
 
 <section id="produk">
 <div class="container">
-<h2 class="section-title">Produk Kami</h2>
-<div class="products">
-<div class="card">
-<h3>Katering Harian</h3>
-<p>Menu rumahan sehat dan lezat untuk keluarga dan kantor.</p>
-</div>
-<div class="card">
-<h3>Nasi Kotak</h3>
-<p>Cocok untuk rapat, seminar, dan berbagai acara.</p>
-</div>
-<div class="card">
-<h3>Kue Basah</h3>
-<p>Aneka jajanan tradisional khas Melayu.</p>
-</div>
-<div class="card">
-<h3>Kue Kering</h3>
-<p>Cocok untuk hampers, oleh-oleh dan hari raya.</p>
-</div>
-</div>
+<h2 class="section-title">Daftar Menu Katering</h2>
+<div id="loading">Sedang memuat menu lezat...</div>
+
+<!-- Tempat Kategori dan Produk Muncul Otomatis -->
+<div id="menu-container"></div>
+
 </div>
 </section>
 
@@ -70,6 +70,69 @@ footer{ background:#222; color:white; text-align:center; padding:30px; }
 </footer>
 
 <a href="https://wa.me/6281234567890" class="whatsapp">WhatsApp</a>
+
+<script>
+// MASUKKAN ID SPREADSHEET KAMU DI SINI
+const sheetId = 'LETAKKAN_ID_SPREADSHEET_KAMU_DISINI'; 
+const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+
+fetch(base)
+    .then(res => res.text())
+    .then(data => {
+        // Membersihkan data mentah dari Google agar bisa dibaca JSON JavaScript
+        const temp = data.substring(47).slice(0, -2);
+        const json = JSON.parse(temp);
+        const rows = json.table.rows;
+        
+        const menuContainer = document.getElementById('menu-container');
+        document.getElementById('loading').style.display = 'none';
+
+        // Kelompokkan data berdasarkan Kategori
+        const groupedMenu = {};
+
+        rows.forEach(row => {
+            const kategori = row.c[0] ? row.c[0].v : 'Lainnya';
+            const nama = row.c[1] ? row.c[1].v : '';
+            const deskripsi = row.c[2] ? row.c[2].v : '';
+            const harga = row.c[3] ? row.c[3].v : '';
+            const foto = row.c[4] ? row.c[4].v : 'https://via.placeholder.com/300x200?text=No+Image';
+
+            if (!groupedMenu[kategori]) {
+                groupedMenu[kategori] = [];
+            }
+            groupedMenu[kategori].push({ nama, deskripsi, harga, foto });
+        });
+
+        // Tampilkan ke dalam HTML berdasarkan Kategori masing-masing
+        for (const kategori in groupedMenu) {
+            let categoryHtml = `
+                <div class="category-block">
+                    <h3 class="category-title">${kategori}</h3>
+                    <div class="products">
+            `;
+
+            groupedMenu[kategori].forEach(item => {
+                categoryHtml += `
+                    <div class="card">
+                        <img src="${item.foto}" alt="${item.nama}">
+                        <div class="card-content">
+                            <h3>${item.nama}</h3>
+                            <p>${item.deskripsi}</p>
+                            <p class="price">${item.harga}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            categoryHtml += `</div></div>`;
+            menuContainer.innerHTML += categoryHtml;
+        }
+    })
+    .catch(err => {
+        document.getElementById('loading').innerText = 'Gagal memuat menu. Pastikan ID Sheets benar & sudah di-share publik.';
+        console.error(err);
+    });
+</script>
 
 </body>
 </html>
